@@ -333,10 +333,7 @@ function App() {
         <div>
           <p className="eyebrow">CV</p>
           <h2>Public CV</h2>
-          <p>
-            A downloadable CV with private contact details removed and the email
-            address obfuscated for the public web.
-          </p>
+          <p>Downloadable Curriculum Vitae.</p>
         </div>
         <a
           className="button button-primary"
