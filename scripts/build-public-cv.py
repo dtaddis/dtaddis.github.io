@@ -90,6 +90,14 @@ styles.add(
 )
 styles.add(
     ParagraphStyle(
+        name="RoleDate",
+        parent=styles["Body"],
+        fontName="Helvetica-Bold",
+        textColor=colors.HexColor("#733324"),
+    )
+)
+styles.add(
+    ParagraphStyle(
         name="CvBullet",
         parent=styles["Body"],
         leftIndent=9,
@@ -143,8 +151,58 @@ def skill_table():
     )
 
 
-def role(title: str, text: str):
-    return KeepTogether([paragraph(title, "Role"), paragraph(text)])
+def two_col_table(rows):
+    return Table(
+        [[paragraph(label, "SkillLabel"), paragraph(text, "SkillText")] for label, text in rows],
+        colWidths=[38 * mm, 125 * mm],
+        style=TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 1),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+            ]
+        ),
+    )
+
+
+def role(company: str, dates: str, text: str):
+    return KeepTogether(
+        [
+            Table(
+                [
+                    [
+                        paragraph(company, "Role"),
+                        paragraph(dates, "RoleDate"),
+                    ]
+                ],
+                colWidths=[88 * mm, 75 * mm],
+                style=TableStyle(
+                    [
+                        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                        ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                        ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                        ("TOPPADDING", (0, 0), (-1, -1), 2),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                    ]
+                ),
+            ),
+            Table(
+                [[paragraph("", "SkillLabel"), paragraph(text, "SkillText")]],
+                colWidths=[38 * mm, 125 * mm],
+                style=TableStyle(
+                    [
+                        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                        ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                        ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                        ("TOPPADDING", (0, 0), (-1, -1), 0),
+                        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+                    ]
+                ),
+            ),
+        ]
+    )
 
 
 story = []
@@ -185,44 +243,55 @@ story.extend(
 story.extend(
     [
         role(
-            "Principal Programmer at FundamentalVR &nbsp;&nbsp; May 2023 - Present",
+            "Principal Programmer at FundamentalVR",
+            "May 2023 - Present",
             "Lead engineer on a team creating VR simulations of surgical procedures for Meta Quest "
             "and desktop headsets using Unity and OpenXR. Responsibilities included liaison with design "
             "and medical teams, scheduling, product demos, and resolving major bugs and performance issues.",
         ),
         role(
-            "Lead Programmer at Factory42 &nbsp;&nbsp; September 2019 - April 2023",
-        "Managed a team of five programmers and shipped AR titles on iPhone, Android and Magic Leap, "
-        "as well as VR prototypes on Meta Quest. Worked mainly in Unity, with Android Studio and other "
-        "tools where appropriate. Liaised with production to keep projects on schedule and integrated "
+            "Lead Programmer at Factory42",
+            "September 2019 - April 2023",
+            "Managed a team of five programmers and shipped AR titles on iPhone, Android and Magic Leap, "
+            "as well as VR prototypes on Meta Quest. Worked mainly in Unity, with Android Studio and other "
+            "tools where appropriate. Liaised with production to keep projects on schedule and integrated "
             "location-based experiences on site.",
         ),
         role(
-            "Lead Programmer at NaturalMotion &nbsp;&nbsp; January 2013 - September 2019",
-        "Developer on the strategy game <i>Dawn of Titans</i>, working across believable troop movement "
-        "for thousands of real-time soldiers, shaders, network code, Scaleform UI, tools, and an "
+            "Lead Programmer at NaturalMotion",
+            "January 2013 - September 2019",
+            "Developer on the strategy game <i>Dawn of Titans</i>, working across believable troop movement "
+            "for thousands of real-time soldiers, shaders, network code, Scaleform UI, tools, and an "
             "unreleased VR mode in an in-house C++ engine.",
         ),
         role(
-            "Senior Programmer at Lionhead Studios &nbsp;&nbsp; July 2008 - October 2012",
-        "Helped ship <i>Fable 2</i>, <i>Fable 3</i>, and the Kinect title <i>Fable: The Journey</i> "
-        "using Unreal Engine 3. During the prototype project <i>Milo</i>, wrote several Kinect "
+            "Senior Programmer at Lionhead Studios",
+            "July 2008 - October 2012",
+            "Helped ship <i>Fable 2</i>, <i>Fable 3</i>, and the Kinect title <i>Fable: The Journey</i> "
+            "using Unreal Engine 3. During the prototype project <i>Milo</i>, wrote several Kinect "
             "minigames in C++ and Lua.",
         ),
         role(
-            "Gameplay/UI Programmer at Electronic Arts &nbsp;&nbsp; June 2005 - July 2008",
+            "Gameplay/UI Programmer at Electronic Arts",
+            "June 2005 - July 2008",
             "Wrote and maintained features for <i>Black</i> and several <i>Burnout</i> games.",
         ),
         role(
-            "Gameplay Programmer at Codemasters &nbsp;&nbsp; April 2004 - June 2005",
+            "Gameplay Programmer at Codemasters",
+            "April 2004 - June 2005",
             "Worked as a gameplay programmer on commercial game projects.",
         ),
         paragraph("Education", "Section"),
-        paragraph("Physics with Computing, BSc from The University of Warwick."),
+        two_col_table([("Degree", "Physics with Computing, BSc from The University of Warwick.")]),
         paragraph("Other Interests", "Section"),
-        paragraph(
-        "Runs a YouTube channel about games and technology, and develops games for fun, available on "
-        "Steam and the Meta Quest store."
+        two_col_table(
+            [
+                (
+                    "Creative work",
+                    "Runs a YouTube channel about games and technology, and develops games for fun, "
+                    "available on Steam and the Meta Quest store.",
+                )
+            ]
         ),
     ]
 )
