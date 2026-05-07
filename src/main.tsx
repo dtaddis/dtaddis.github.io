@@ -8,15 +8,10 @@ import {
   Gamepad2,
   Guitar,
   Mail,
-  Play,
-  Store,
   Youtube,
 } from "lucide-react";
 import { siteData, type SiteLink } from "./siteData";
-import { youtubeVideos } from "./youtubeVideos";
 import "./styles.css";
-
-const videos = youtubeVideos;
 
 function externalLinkProps(label: string) {
   return {
@@ -228,38 +223,17 @@ function App() {
         <SectionHeading
           eyebrow="YouTube"
           title="Recent videos"
-          description="The latest uploads are refreshed during the site build. If the feed is unavailable, the channel link remains ready."
+          description="The latest uploads are loaded directly from YouTube, so this section updates for viewers without a site rebuild."
         />
-        {videos.length > 0 ? (
-          <div className="video-grid">
-            {videos.slice(0, 3).map((video) => (
-              <a
-                className="video-card"
-                href={video.url}
-                key={video.id}
-                {...externalLinkProps(video.title)}
-              >
-                <img src={video.thumbnail} alt="" loading="lazy" />
-                <div>
-                  <span>
-                    <Play aria-hidden="true" size={15} fill="currentColor" />
-                    {new Date(video.published).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <h3>{video.title}</h3>
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <div className="empty-state">
-            <Youtube aria-hidden="true" size={26} strokeWidth={2.1} />
-            <p>Recent uploads could not be loaded during the latest build.</p>
-          </div>
-        )}
+        <div className="youtube-embed">
+          <iframe
+            title="Latest videos from David Addis on YouTube"
+            src={`https://www.youtube-nocookie.com/embed/videoseries?list=${siteData.links.youtubeUploadsPlaylist}`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          />
+        </div>
         <LinkButton
           variant="primary"
           link={{ label: "Visit YouTube channel", href: siteData.links.youtube }}

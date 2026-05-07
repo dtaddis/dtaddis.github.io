@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "prebuild": "node scripts/fetch-youtube-videos.js && node scripts/copy-static-pages.js",
+    "prebuild": "node scripts/copy-static-pages.js",
     "predev": "node scripts/copy-static-pages.js",
     "dev": "vite --host 127.0.0.1",
     "build": "tsc -b && vite build",
