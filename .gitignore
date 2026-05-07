@@ -4,3 +4,4 @@ dist/
 *.tsbuildinfo
 dev-server.log
 public/gamedev.html
+src/*.tsbuildinfo
