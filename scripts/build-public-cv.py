@@ -73,6 +73,7 @@ styles.add(
         fontSize=10,
         leading=13,
         textColor=colors.HexColor("#18211f"),
+        leftIndent=9,
         spaceBefore=4,
         spaceAfter=1,
     )
@@ -94,6 +95,14 @@ styles.add(
         parent=styles["Body"],
         fontName="Helvetica-Bold",
         textColor=colors.HexColor("#733324"),
+        alignment=TA_RIGHT,
+    )
+)
+styles.add(
+    ParagraphStyle(
+        name="IndentedBody",
+        parent=styles["Body"],
+        leftIndent=9,
     )
 )
 styles.add(
@@ -132,7 +141,7 @@ def skill_table():
     rows = [
         ("Languages", "C#, C++, Java, Python, Lua"),
         ("Platforms", "iOS, Android, AR, VR, Xbox 360, PS3, PC, PSP, NDS"),
-        ("Game Tech", "Unity, Unreal Engine, OpenXR, proprietary C++ engines, Scaleform UI"),
+        ("Game Tech", "Unity, Unreal Engine, OpenXR, Meta XR, custom engines"),
         ("Creative Tools", "Maya, Blender, Adobe Suite"),
         ("Spoken Languages", "English, basic Swedish and Ukrainian"),
     ]
@@ -177,7 +186,7 @@ def role(company: str, dates: str, text: str):
                         paragraph(dates, "RoleDate"),
                     ]
                 ],
-                colWidths=[88 * mm, 75 * mm],
+                colWidths=[95 * mm, 68 * mm],
                 style=TableStyle(
                     [
                         ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -188,19 +197,7 @@ def role(company: str, dates: str, text: str):
                     ]
                 ),
             ),
-            Table(
-                [[paragraph("", "SkillLabel"), paragraph(text, "SkillText")]],
-                colWidths=[38 * mm, 125 * mm],
-                style=TableStyle(
-                    [
-                        ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                        ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                        ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                        ("TOPPADDING", (0, 0), (-1, -1), 0),
-                        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-                    ]
-                ),
-            ),
+            paragraph(text, "IndentedBody"),
         ]
     )
 
@@ -261,7 +258,7 @@ story.extend(
             "Lead Programmer at NaturalMotion",
             "January 2013 - September 2019",
             "Developer on the strategy game <i>Dawn of Titans</i>, working across believable troop movement "
-            "for thousands of real-time soldiers, shaders, network code, Scaleform UI, tools, and an "
+            "for thousands of real-time soldiers, shaders, network code, UI, tools, and an "
             "unreleased VR mode in an in-house C++ engine.",
         ),
         role(
