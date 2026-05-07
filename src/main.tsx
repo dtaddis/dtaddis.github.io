@@ -1,4 +1,4 @@
-import { StrictMode, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowUpRight,
@@ -8,6 +8,7 @@ import {
   Gamepad2,
   Guitar,
   Mail,
+  Play,
   Youtube,
 } from "lucide-react";
 import { siteData, type SiteLink } from "./siteData";
@@ -69,6 +70,58 @@ function SectionHeading({
   );
 }
 
+type YouTubeFeedItem = {
+  guid: string;
+  title: string;
+  pubDate: string;
+  link: string;
+  thumbnail: string;
+};
+
+type FeedState =
+  | { status: "loading"; videos: YouTubeFeedItem[] }
+  | { status: "ready"; videos: YouTubeFeedItem[] }
+  | { status: "error"; videos: YouTubeFeedItem[] };
+
+const youtubeFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${siteData.links.youtubeChannelId}`;
+const youtubeFeedProxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(youtubeFeedUrl)}`;
+
+function useYouTubeFeed() {
+  const [feed, setFeed] = useState<FeedState>({ status: "loading", videos: [] });
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchVideos() {
+      try {
+        const response = await fetch(youtubeFeedProxyUrl, {
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          throw new Error(`Feed request failed: ${response.status}`);
+        }
+        const payload = (await response.json()) as {
+          status?: string;
+          items?: YouTubeFeedItem[];
+        };
+        if (payload.status !== "ok" || !payload.items?.length) {
+          throw new Error("Feed returned no videos");
+        }
+        setFeed({ status: "ready", videos: payload.items.slice(0, 3) });
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setFeed({ status: "error", videos: [] });
+        }
+      }
+    }
+
+    fetchVideos();
+    return () => controller.abort();
+  }, []);
+
+  return feed;
+}
+
 function ContactActions() {
   const [copied, setCopied] = useState(false);
   const email = buildEmailAddress();
@@ -102,6 +155,59 @@ function ContactActions() {
         <span>{copied ? "Email copied" : "Copy email"}</span>
       </button>
     </div>
+  );
+}
+
+function YouTubeSection() {
+  const feed = useYouTubeFeed();
+
+  return (
+    <section className="content-band youtube-band" id="youtube">
+      <SectionHeading
+        eyebrow="YouTube"
+        title="Recent videos"
+        description="The latest videos from my YouTube channel."
+      />
+      {feed.status === "ready" ? (
+        <div className="video-grid">
+          {feed.videos.map((video) => (
+            <a
+              className="video-card"
+              href={video.link}
+              key={video.guid}
+              {...externalLinkProps(video.title)}
+            >
+              <img src={video.thumbnail} alt="" loading="lazy" />
+              <div>
+                <span>
+                  <Play aria-hidden="true" size={15} fill="currentColor" />
+                  {new Date(video.pubDate).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
+                <h3>{video.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div className="youtube-embed">
+          <iframe
+            title="Latest videos from David Addis on YouTube"
+            src={`https://www.youtube-nocookie.com/embed/videoseries?list=${siteData.links.youtubeUploadsPlaylist}&listType=playlist`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          />
+        </div>
+      )}
+      <LinkButton
+        variant="primary"
+        link={{ label: "Visit YouTube channel", href: siteData.links.youtube }}
+      />
+    </section>
   );
 }
 
@@ -219,26 +325,7 @@ function App() {
         </div>
       </section>
 
-      <section className="content-band youtube-band" id="youtube">
-        <SectionHeading
-          eyebrow="YouTube"
-          title="Recent videos"
-          description="The latest videos from my YouTube channel."
-        />
-        <div className="youtube-embed">
-          <iframe
-            title="Latest videos from David Addis on YouTube"
-            src={`https://www.youtube-nocookie.com/embed/videoseries?list=${siteData.links.youtubeUploadsPlaylist}&listType=playlist`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            loading="lazy"
-          />
-        </div>
-        <LinkButton
-          variant="primary"
-          link={{ label: "Visit YouTube channel", href: siteData.links.youtube }}
-        />
-      </section>
+      <YouTubeSection />
 
       <section className="contact-band" id="contact">
         <div>

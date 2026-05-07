@@ -34,6 +34,7 @@ export const siteData = {
     unityAssets: "https://assetstore.unity.com/publishers/126206",
     bandcamp: "https://iamthemanicwhale.bandcamp.com/",
     youtube: "https://www.youtube.com/@DavidAddis",
+    youtubeChannelId: "UCIblnJ0mWIZ4QHJaB1p-BLg",
     youtubeUploadsPlaylist: "UUIblnJ0mWIZ4QHJaB1p-BLg",
   },
   games: [
