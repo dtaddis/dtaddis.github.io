@@ -223,12 +223,12 @@ function App() {
         <SectionHeading
           eyebrow="YouTube"
           title="Recent videos"
-          description="The latest uploads are loaded directly from YouTube, so this section updates for viewers without a site rebuild."
+          description="The latest videos from my YouTube channel."
         />
         <div className="youtube-embed">
           <iframe
             title="Latest videos from David Addis on YouTube"
-            src={`https://www.youtube-nocookie.com/embed/videoseries?list=${siteData.links.youtubeUploadsPlaylist}`}
+            src={`https://www.youtube-nocookie.com/embed/videoseries?list=${siteData.links.youtubeUploadsPlaylist}&listType=playlist`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
             loading="lazy"
