@@ -96,6 +96,20 @@ styles.add(
         firstLineIndent=-9,
     )
 )
+styles.add(
+    ParagraphStyle(
+        name="SkillLabel",
+        parent=styles["Body"],
+        fontName="Helvetica-Bold",
+        textColor=colors.HexColor("#18211f"),
+    )
+)
+styles.add(
+    ParagraphStyle(
+        name="SkillText",
+        parent=styles["Body"],
+    )
+)
 
 
 def paragraph(text: str, style: str = "Body") -> Paragraph:
@@ -104,6 +118,29 @@ def paragraph(text: str, style: str = "Body") -> Paragraph:
 
 def bullet(text: str) -> Paragraph:
     return paragraph(f"&bull;&nbsp; {text}", "CvBullet")
+
+
+def skill_table():
+    rows = [
+        ("Languages", "C#, C++, Java, Python, Lua"),
+        ("Platforms", "iOS, Android, AR, VR, Xbox 360, PS3, PC, PSP, NDS"),
+        ("Game Tech", "Unity, Unreal Engine, OpenXR, proprietary C++ engines, Scaleform UI"),
+        ("Creative Tools", "Maya, Blender, Adobe Suite"),
+        ("Spoken Languages", "English, basic Swedish and Ukrainian"),
+    ]
+    return Table(
+        [[paragraph(label, "SkillLabel"), paragraph(text, "SkillText")] for label, text in rows],
+        colWidths=[38 * mm, 125 * mm],
+        style=TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                ("TOPPADDING", (0, 0), (-1, -1), 1),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+            ]
+        ),
+    )
 
 
 def role(title: str, text: str):
@@ -141,10 +178,7 @@ story.extend(
         "Intro",
         ),
         paragraph("Skills", "Section"),
-        bullet("C#, C++, Java, Python, Lua"),
-        bullet("Unity, Unreal Engine, Maya, Blender, Adobe Suite"),
-        bullet("iOS, Android, AR, VR, Xbox 360, PS3, PC, PSP and NDS development"),
-        bullet("English, basic Swedish and Ukrainian"),
+        skill_table(),
         paragraph("Experience", "Section"),
     ]
 )
