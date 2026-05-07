@@ -36,6 +36,7 @@ export const siteData = {
     youtube: "https://www.youtube.com/@DavidAddis",
     youtubeChannelId: "UCIblnJ0mWIZ4QHJaB1p-BLg",
     youtubeUploadsPlaylist: "UUIblnJ0mWIZ4QHJaB1p-BLg",
+    cv: "/files/david-addis-cv.pdf",
   },
   games: [
     {

@@ -5,6 +5,7 @@ import {
   Box,
   Check,
   Copy,
+  FileText,
   Gamepad2,
   Guitar,
   Mail,
@@ -220,6 +221,7 @@ function App() {
           <a href="#assets">Unity Assets</a>
           <a href="#music">Music</a>
           <a href="#youtube">YouTube</a>
+          <a href="#cv">CV</a>
           <a href="#contact">Contact</a>
         </nav>
 
@@ -326,6 +328,26 @@ function App() {
       </section>
 
       <YouTubeSection />
+
+      <section className="cv-band" id="cv">
+        <div>
+          <p className="eyebrow">CV</p>
+          <h2>Public CV</h2>
+          <p>
+            A downloadable CV with private contact details removed and the email
+            address obfuscated for the public web.
+          </p>
+        </div>
+        <a
+          className="button button-primary"
+          href={siteData.links.cv}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FileText aria-hidden="true" size={18} strokeWidth={2.2} />
+          <span>Download CV</span>
+        </a>
+      </section>
 
       <section className="contact-band" id="contact">
         <div>

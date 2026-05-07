@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "build-cv": "python scripts/build-public-cv.py",
     "prebuild": "node scripts/copy-static-pages.js",
     "predev": "node scripts/copy-static-pages.js",
     "dev": "vite --host 127.0.0.1",

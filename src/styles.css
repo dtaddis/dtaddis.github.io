@@ -208,6 +208,7 @@ h1 {
 
 .content-band,
 .music-strip,
+.cv-band,
 .contact-band,
 footer {
   padding-inline: clamp(20px, 5vw, 72px);
@@ -226,6 +227,7 @@ footer {
 
 .section-heading h2,
 .music-strip h2,
+.cv-band h2,
 .contact-band h2 {
   margin-bottom: 12px;
   color: #121917;
@@ -238,6 +240,7 @@ footer {
 .game-card span,
 .asset-card span,
 .music-strip p,
+.cv-band p,
 .contact-band p {
   color: var(--muted);
   font-size: 1rem;
@@ -488,6 +491,7 @@ footer {
   width: fit-content;
 }
 
+.cv-band,
 .contact-band {
   display: flex;
   align-items: center;
@@ -495,6 +499,22 @@ footer {
   gap: 28px;
   max-width: 1180px;
   margin: 0 auto;
+}
+
+.cv-band {
+  padding-top: 64px;
+  padding-bottom: 10px;
+}
+
+.cv-band div {
+  max-width: 680px;
+}
+
+.cv-band p {
+  margin-bottom: 0;
+}
+
+.contact-band {
   padding-top: 72px;
   padding-bottom: 72px;
 }
@@ -537,6 +557,7 @@ footer a:focus-visible {
 @media (max-width: 980px) {
   .hero-grid,
   .music-strip,
+  .cv-band,
   .contact-band {
     grid-template-columns: 1fr;
   }
@@ -559,6 +580,7 @@ footer a:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .cv-band,
   .contact-band {
     display: grid;
     align-items: start;
