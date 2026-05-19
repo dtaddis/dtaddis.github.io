@@ -37,6 +37,7 @@ export const siteData = {
     youtubeChannelId: "UCIblnJ0mWIZ4QHJaB1p-BLg",
     youtubeUploadsPlaylist: "UUIblnJ0mWIZ4QHJaB1p-BLg",
     cv: "/files/david-addis-cv.pdf",
+    buyMeACoffee: "https://buymeacoffee.com/davidaddis",
   },
   games: [
     {

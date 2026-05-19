@@ -534,6 +534,7 @@ footer {
 footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 18px;
   max-width: 1180px;
   margin: 0 auto;
@@ -546,6 +547,20 @@ footer {
 footer a {
   font-weight: 800;
   text-decoration: none;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.support-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #7b5c22;
 }
 
 footer a:hover,

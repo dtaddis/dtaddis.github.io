@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   Box,
   Check,
+  Coffee,
   Copy,
   FileText,
   Gamepad2,
@@ -360,7 +361,18 @@ function App() {
 
       <footer>
         <span>Copyright {new Date().getFullYear()} David Addis</span>
-        <a href="/gamedev.html">Game privacy policy</a>
+        <div className="footer-links">
+          <a href="/gamedev.html">Game privacy policy</a>
+          <a
+            className="support-link"
+            href={siteData.links.buyMeACoffee}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Coffee aria-hidden="true" size={15} strokeWidth={2.2} />
+            <span>Buy me a coffee</span>
+          </a>
+        </div>
       </footer>
     </main>
   );
