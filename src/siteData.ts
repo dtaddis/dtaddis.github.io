@@ -38,6 +38,8 @@ export const siteData = {
     youtubeUploadsPlaylist: "UUIblnJ0mWIZ4QHJaB1p-BLg",
     cv: "/files/david-addis-cv.pdf",
     buyMeACoffee: "https://buymeacoffee.com/davidaddis",
+    github: "https://github.com/dtaddis",
+    githubReposApi: "https://api.github.com/users/dtaddis/repos?sort=updated&direction=desc&per_page=3",
   },
   games: [
     {

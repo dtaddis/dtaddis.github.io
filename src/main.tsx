@@ -8,9 +8,12 @@ import {
   Copy,
   FileText,
   Gamepad2,
+  GitFork,
+  Github,
   Guitar,
   Mail,
   Play,
+  Star,
   Youtube,
 } from "lucide-react";
 import { siteData, type SiteLink } from "./siteData";
@@ -85,6 +88,22 @@ type FeedState =
   | { status: "ready"; videos: YouTubeFeedItem[] }
   | { status: "error"; videos: YouTubeFeedItem[] };
 
+type GitHubRepo = {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  language: string | null;
+  updated_at: string;
+  stargazers_count: number;
+  fork: boolean;
+};
+
+type RepoState =
+  | { status: "loading"; repos: GitHubRepo[] }
+  | { status: "ready"; repos: GitHubRepo[] }
+  | { status: "error"; repos: GitHubRepo[] };
+
 const youtubeFeedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${siteData.links.youtubeChannelId}`;
 const youtubeFeedProxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(youtubeFeedUrl)}`;
 
@@ -122,6 +141,36 @@ function useYouTubeFeed() {
   }, []);
 
   return feed;
+}
+
+function useGitHubRepos() {
+  const [repos, setRepos] = useState<RepoState>({ status: "loading", repos: [] });
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchRepos() {
+      try {
+        const response = await fetch(siteData.links.githubReposApi, {
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          throw new Error(`GitHub request failed: ${response.status}`);
+        }
+        const payload = (await response.json()) as GitHubRepo[];
+        setRepos({ status: "ready", repos: payload.slice(0, 3) });
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setRepos({ status: "error", repos: [] });
+        }
+      }
+    }
+
+    fetchRepos();
+    return () => controller.abort();
+  }, []);
+
+  return repos;
 }
 
 function ContactActions() {
@@ -213,6 +262,68 @@ function YouTubeSection() {
   );
 }
 
+function GitHubSection() {
+  const repos = useGitHubRepos();
+
+  return (
+    <section className="content-band github-band" id="github">
+      <SectionHeading
+        eyebrow="GitHub"
+        title="Recent public repositories"
+        description="The latest public repos from my GitHub profile."
+      />
+      {repos.status === "ready" ? (
+        <div className="repo-grid">
+          {repos.repos.map((repo) => (
+            <a
+              className="repo-card"
+              href={repo.html_url}
+              key={repo.id}
+              {...externalLinkProps(repo.name)}
+            >
+              <div className="repo-card-top">
+                <Github aria-hidden="true" size={22} strokeWidth={2.1} />
+                {repo.fork ? (
+                  <span className="repo-pill">
+                    <GitFork aria-hidden="true" size={13} strokeWidth={2.2} />
+                    Fork
+                  </span>
+                ) : null}
+              </div>
+              <h3>{repo.name}</h3>
+              <p>{repo.description ?? "Public GitHub repository."}</p>
+              <div className="repo-meta">
+                {repo.language ? <span>{repo.language}</span> : null}
+                <span>
+                  <Star aria-hidden="true" size={14} strokeWidth={2.1} />
+                  {repo.stargazers_count}
+                </span>
+                <span>
+                  Updated{" "}
+                  {new Date(repo.updated_at).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div className="github-fallback">
+          <Github aria-hidden="true" size={26} strokeWidth={2.1} />
+          <p>Recent repositories could not be loaded right now.</p>
+        </div>
+      )}
+      <LinkButton
+        variant="primary"
+        link={{ label: "Visit GitHub profile", href: siteData.links.github }}
+      />
+    </section>
+  );
+}
+
 function App() {
   return (
     <main>
@@ -222,6 +333,7 @@ function App() {
           <a href="#assets">Unity Assets</a>
           <a href="#music">Music</a>
           <a href="#youtube">YouTube</a>
+          <a href="#github">GitHub</a>
           <a href="#cv">CV</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -329,6 +441,8 @@ function App() {
       </section>
 
       <YouTubeSection />
+
+      <GitHubSection />
 
       <section className="cv-band" id="cv">
         <div>
